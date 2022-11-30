@@ -16,18 +16,18 @@ class MalAnime():
         self.__account = malAccount
         self.__query = _BasicReq(self.__account.getHttpHeaders())
 
-    def get_anime_list(self,q,limit=100,offset=0,fields="id,title,main_picture"):
+    def get_list(self,q,limit=100,offset=0,fields="id,title,main_picture"):
         payload =  {"q" : q, "limit": limit, "offset": offset, "fields": fields}
         return self.__query._get(self.__slugType,payload)
 
-    def get_anime_details(self,anime_id: int,fields="id,title,main_picture,my_list_status"):
+    def get_details(self,anime_id: int,fields="id,title,main_picture,my_list_status"):
         payload =  {"fields":fields}
         return self.__query._get(self.__slugType+"/%i"%(anime_id),payload)
 
-    def get_seasonal_anime(self,year: int,season,sort="anime_score",limit=100,offset=0,fields="id,title,main_picture"):
+    def get_seasonal(self,year: int,season,sort="anime_score",limit=100,offset=0,fields="id,title,main_picture"):
         payload =  {"sort":sort,"limit": limit, "offset": offset, "fields": fields}
         return self.__query._get(self.__slugType+"/season/%i/%s"%(year,season),payload)
 
-    def get_suggested_anime(self,limit=100,offset=0,fields="id,title,main_picture"):
+    def get_suggested(self,limit=100,offset=0,fields="id,title,main_picture"):
         payload =  {"limit": limit, "offset": offset, "fields": fields}
         return self.__query._get(self.__slugType+"/suggestions",payload)

@@ -2,7 +2,7 @@ from typing import Any, Callable
 import requests
 
 _apiUrl = "https://api.myanimelist.net/v2/"
-_secondaryApiUrl = "https://myanimelist.net/v1"
+_secondaryApiUrl = "https://myanimelist.net/v1/"
 
 class _BasicReq:
     def __init__(self, headers: dict | None = None):
@@ -28,12 +28,13 @@ class _BasicReq:
     
     def _postApiV1(self, slug, data: dict | None = None) -> dict:
         responsePost = requests.post(_secondaryApiUrl+slug,headers=self.headers,data=data)
+        print(_secondaryApiUrl+slug)
         return responsePost.json()
     
     def _put(self, slug) -> dict:
-        responsePost = requests.post(_apiUrl+slug,headers=self.headers)
-        return responsePost.json()
+        responsePut = requests.post(_apiUrl+slug,headers=self.headers)
+        return responsePut.json()
     
     def _delete(self, slug) -> dict:
-        responsePost = requests.post(_apiUrl+slug,headers=self.headers)
-        return responsePost.json()
+        responseDel = requests.post(_apiUrl+slug,headers=self.headers)
+        return responseDel.json()

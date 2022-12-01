@@ -1,20 +1,22 @@
 import json
 import secrets
-from mal._basic import _BasicReq, _secondaryApiUrl
+from mal._basic import _BasicReq, _secondary_api_url
+from mal._anime import MalAnime
 
-def get_new_code_verifier() -> str: #para generar codigos
+def get_new_code_verifier() -> str:
+    """Generate new Code Verifier from Auth"""
     token = secrets.token_urlsafe(100)
     return token[:128]
 
 class _MalToken():
+    """Class for Generate Token for Session on API MAL"""
+    def __init__(self, token_type: str,access_token: str,refresh_token: str,expires_in: int | None):
+        self.token_type: str = token_type
+        self.expires_in: int | None = expires_in
+        self.access_token: str = access_token
+        self.refresh_token: str = refresh_token
 
-    def __init__(self, tokenType: str,accessToken: str,refreshToken: str,expiresIn: int | None):
-        self.token_type: str = tokenType
-        self.expires_in: int | None = expiresIn
-        self.access_token: str = accessToken
-        self.refresh_token: str = refreshToken
-
-    def fromJsonObj(obj: dict["token_type": str,"access_token": str,"refresh_token": str, "expires_in": int | None]): 
+    def __from_json_obj(obj: dict["token_type": str,"access_token": str,"refresh_token": str, "expires_in": int | None]): 
         """Get MalToken From Token JSON Object"""
         try:
             return _MalToken(
@@ -26,7 +28,7 @@ class _MalToken():
         except:
             return obj
 
-    def fromJsonString(string: str):
+    def __from_json_string(string: str):
         """Get MalToken From Token JSON String"""
         obj = dict[
             "token_type": str,
@@ -44,13 +46,13 @@ class _MalToken():
         except:
             return obj
 
-    async def fromCredential(clientId: str,username: str,password: str):
+    async def __from_credential(client_id: str,username: str,password: str):
         """
         **Unstable!**
         Get MalToken From Login And Password
         """
         DATA = {
-            "client_id": clientId,
+            "client_id": client_id,
             "grant_type": "password",
             "username": username,
             "password": password
@@ -67,15 +69,15 @@ class _MalToken():
         except:
             return res
 
-    async def fromRefreshToken(clientId: str, refreshToken: str):
+    async def __from_refresh_token(client_id: str, refresh_token: str):
         """Get MalToken From Refresh Token"""
         DATA = {
-            "client_id": clientId,
-            "refresh_token": refreshToken,
+            "client_id": client_id,
+            "refresh_token": refresh_token,
             "grant_type": "refresh_token",
         }
         REQ = REQ = _BasicReq()
-        res = REQ._postApiV1("oauth2/token",data=DATA)
+        res = REQ._post_api_v1("oauth2/token",data=DATA)
         try:
             return _MalToken(
                 res["token_type"],
@@ -86,16 +88,16 @@ class _MalToken():
         except:
             return res
 
-    async def fromAuthorizationCode(clientId: str,code: str,codeVerifier: str): 
+    async def __from_authorization_code(client_id: str,code: str,code_verifier: str): 
         """Get _MalToken From PKCE Authorization Code"""
         DATA = {
-            "client_id": clientId,
+            "client_id": client_id,
             "grant_type": "authorization_code",
             "code": code,
-            "code_verifier": codeVerifier,
+            "code_verifier": code_verifier,
         }
         REQ = REQ = _BasicReq()
-        res = REQ._postApiV1("oauth2/token",data=DATA)
+        res = REQ._post_api_v1("oauth2/token",data=DATA)
         try:
             return _MalToken(
                 res["token_type"],
@@ -108,67 +110,70 @@ class _MalToken():
 
 class _MalAccount():
 
-    def __init__(self, clientId: str, malToken: _MalToken | None = None):
-        self.__clientId: str = clientId
-        self.__malToken: _MalToken = malToken
-        # DONT USE REFERENCE CIRCULAR TO IMPORT NO VALID
+    def __init__(self, client_id: str, mal_token: _MalToken | None = None):
+        self.__client_id: str = client_id
+        self.__mal_token: _MalToken = mal_token
         # self.user: MalUser = MalUser(self)
-        # self.anime:MalAnime = MalAnime(self)
+        self.anime:MalAnime = MalAnime(self.__get_http_headers())
         # self.manga: MalManga = MalManga(self)
         # self.forum: MalForum = MalForum(self)
 
-    async def refreshToken(self):
-        if (self.__malToken is None):
-            self.__malToken = await _MalToken.fromRefreshToken(
-                self.__clientId,
-                self.__malToken.refresh_token
+    def stringify_token(self) -> str:
+        if (self.__mal_token is None):
+            return json.dumps(self.__mal_token)
+        else:
+            return None
+    
+    async def refresh_token(self):
+        if (self.__mal_token is None):
+            self.__mal_token = await _MalToken.__from_refresh_token(
+                self.__client_id,
+                self.__mal_token
             )
         return self
 
-    def getHttpHeaders(self):
+    def __get_http_headers(self):
         HEADERS: dict[str, str] = {
             'Content-Type': 'application/json',
             "Authorization": None,
-            "X-MAL-CLIENT-ID": self.__clientId
+            "X-MAL-CLIENT-ID": self.__client_id
         }
-        print(type(self.__malToken))
-        if (self.__malToken is None):
-            HEADERS["Authorization"] = "Bearer %s" %(self.__malToken["access_token"])
+        print(HEADERS)
+        if (self.__mal_token is None):
+            HEADERS["Authorization"] = "Bearer %s" %(self.__mal_token["access_token"])
         return HEADERS
-
-    def stringifyToken(self) -> str:
-        if (self.__malToken is None):
-            return json.dumps(self.__malToken)
-        else:
-            return None
 
 class Auth():
     
-    def __init__(self,clientId: str = "6114d00ca681b7701d1e15fe11a4987e"):
-        self.__clientId = clientId
+    def __init__(self,client_id: str = "6114d00ca681b7701d1e15fe11a4987e"):
+        self.__client_id = client_id
 
-    def loadToken(self, token: _MalToken):
-        return _MalAccount(self.__clientId, token)
+    def load_token(self, token: _MalToken):
+        return _MalAccount(self.__client_id, token)
 
-    def getOAuthUrl(self,codeChallenge: str) -> str:
-        BASE = _secondaryApiUrl
-        return  "%soauth2/authorize?response_type=code&client_id=%s&code_challenge_method=plain&code_challenge=%s" %(BASE,self.__clientId,codeChallenge)
+    def get_oauth_url(self,code_challenge: str) -> str:
+        return  "%soauth2/authorize?response_type=code&client_id=%s&code_challenge_method=plain&code_challenge=%s" %(_secondary_api_url,self.__client_id,code_challenge)
 
-    async def authorizeWithRefreshToken(self,refreshToken: str) -> _MalAccount: 
-        MALTOKEN = await _MalToken.fromRefreshToken(self.__clientId,refreshToken)
-        return _MalAccount(self.__clientId, MALTOKEN)
+    async def authorize_with_refreshtoken(self,refresh_token: str) -> _MalAccount: 
+        MALTOKEN = await _MalToken.__from_refresh_token(self.__client_id,refresh_token)
+        return _MalAccount(self.__client_id, MALTOKEN)
 
-    async def authorizeWithCode(self, code: str,codeChallenge: str) -> _MalAccount:
+    async def authorize_with_code(self, code: str,code_challenge: str) -> _MalAccount:
         """It is actually a `code_verifier` but mal accepts code_challenge here instead"""
-        MALTOKEN = await _MalToken.fromAuthorizationCode(self.__clientId,code,codeChallenge)
-        return _MalAccount(self.__clientId, MALTOKEN)
+        MALTOKEN = await _MalToken.__from_authorization_code(self.__client_id,code,code_challenge)
+        return _MalAccount(self.__client_id, MALTOKEN)
 
-    # *** UNSTABLE FOR NO USE PRODUCTION ***
-    # async def guestLogin(self) -> _MalAccount:
-    #     return _MalAccount(self.__clientId, None)
-
-    async def unstableLogin(self,username: str, password: str) -> _MalAccount:
+    async def authorize_with_json_obj(self, json_obj: dict["token_type": str,"access_token": str,"refresh_token": str, "expires_in": int | None]) -> _MalAccount:
+        """Get MalToken From Token Json Dict"""
+        MALTOKEN = await _MalToken.__from_json_obj(json_obj)
+        return _MalAccount(self.__client_id, MALTOKEN)
+    
+    async def authorize_with_json_string(self, json_str: str) -> _MalAccount:
+        """Get MalToken From Token JSON String"""
+        MALTOKEN = await _MalToken.__from_json_string(json_str)
+        return _MalAccount(self.__client_id, MALTOKEN)
+    
+    async def unstable_login(self,username: str, password: str) -> _MalAccount:
         """### Login to API using login and password `(Unstable!)`"""
-        MALTOKEN = await _MalToken.fromCredential(self.__clientId,username,password)
-        print(self.__clientId)
-        return _MalAccount(self.__clientId, MALTOKEN)
+        MALTOKEN = await _MalToken.__from_credential(self.__client_id,username,password)
+        return _MalAccount(self.__client_id, MALTOKEN)

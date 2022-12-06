@@ -16,24 +16,25 @@ class _BasicReq:
         else:
             self.headers = headers
 
-    def _get(self, slug, params) -> dict:
+    def _get(self, slug, params) -> list[int,dict]:
         resp_get = requests.get(_api_url+slug,params=params,headers=self.headers)
-        print(resp_get.url)
-        return resp_get.json()
+        print(resp_get.status_code)
+        print(resp_get.json())
+        return [resp_get.status_code,resp_get.json()]
     
-    def _post(self, slug, data: dict | None = None) -> dict:
+    def _post(self, slug, data: dict | None = None) -> list[int,dict]:
         resp_post = requests.post(_api_url+slug,headers=self.headers,data=data)
-        return resp_post.json()
+        return [resp_post.status_code,resp_post.json()]
     
-    def _post_api_v1(self, slug, data: dict | None = None) -> dict:
+    def _post_api_v1(self, slug, data: dict | None = None) -> list[int,dict]:
         resp_post = requests.post(_secondary_api_url+slug,headers=self.headers,data=data)
         print(_secondary_api_url+slug)
-        return resp_post.json()
+        return [resp_post.status_code,resp_post.json()]
     
-    def _put(self, slug) -> dict:
+    def _put(self, slug) -> list[int,dict]:
         resp_put = requests.post(_api_url+slug,headers=self.headers)
-        return resp_put.json()
+        return [resp_put.status_code,resp_put.json()]
     
-    def _delete(self, slug) -> dict:
+    def _delete(self, slug) -> list[int,dict]:
         resp_del = requests.post(_api_url+slug,headers=self.headers)
-        return resp_del.json()
+        return [resp_del.status_code,resp_del.json()]

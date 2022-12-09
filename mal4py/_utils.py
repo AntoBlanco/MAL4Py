@@ -1,7 +1,7 @@
 import json
 import secrets
-from mal._basic import _BasicReq, _secondary_api_url
-from mal._query import MalAnime, MalManga, MalForum, MalUser
+from mal4py._basic import _BasicReq, _secondary_api_url
+from mal4py._query import MalAnime, MalManga, MalForum, MalUser
 
 def get_new_code_verifier() -> str:
     """Generate new Code Verifier from Auth"""
@@ -174,14 +174,14 @@ class Auth():
         MALTOKEN = await _MalToken._from_authorization_code(self.__client_id,code,code_challenge)
         return _MalAccount(self.__client_id, MALTOKEN)
 
-    async def authorize_with_json_obj(self, json_obj: dict["token_type": str,"access_token": str,"refresh_token": str, "expires_in": int | None]) -> _MalAccount:
+    def authorize_with_json_obj(self, json_obj: dict["token_type": str,"access_token": str,"refresh_token": str, "expires_in": int | None]) -> _MalAccount:
         """Get MalToken From Token JSON Dict"""
-        MALTOKEN = await _MalToken._from_json_obj(json_obj)
+        MALTOKEN = _MalToken._from_json_obj(json_obj)
         return _MalAccount(self.__client_id, MALTOKEN)
     
-    async def authorize_with_json_string(self, json_str: str) -> _MalAccount:
+    def authorize_with_json_string(self, json_str: str) -> _MalAccount:
         """Get MalToken From Token JSON String"""
-        MALTOKEN = await _MalToken._from_json_string(json_str)
+        MALTOKEN = _MalToken._from_json_string(json_str)
         return _MalAccount(self.__client_id, MALTOKEN)
     
     async def unstable_login(self,username: str, password: str) -> _MalAccount:

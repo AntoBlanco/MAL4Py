@@ -1,5 +1,5 @@
-from mal._basic import _BasicReq
-from mal._media import set_media, set_media_list, set_forum_list, Anime, Manga, Forum, User, AnimeListItem, MangaListItem
+from mal4py._basic import _BasicReq
+from mal4py._media import set_media, set_media_list, set_forum_list, Anime, Manga, Forum, User, AnimeListItem, MangaListItem
 
 class MalAnime():
     def __init__(self, header_session: dict[str,str]):

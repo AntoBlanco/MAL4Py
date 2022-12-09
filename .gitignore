@@ -1,6 +1,9 @@
 #Testing local
 test.py
 
+#Pypi confg
+.pypirc
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

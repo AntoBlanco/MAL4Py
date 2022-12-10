@@ -1,4 +1,4 @@
-from typing import Union, List
+from typing import Union, List, Dict
 import requests
 
 _api_url = "https://api.myanimelist.net/v2/"
@@ -6,7 +6,7 @@ _secondary_api_url = "https://myanimelist.net/v1/"
 
 
 class _BasicReq:
-    def __init__(self, headers: Union[dict[str, str], None] = None):
+    def __init__(self, headers: Union[Dict[str, str], None] = None):
         """
         Add params from API MAL GET and Headers from query
         """

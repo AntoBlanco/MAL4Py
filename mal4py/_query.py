@@ -10,7 +10,7 @@ class MalAnime():
     @set_media_list(Anime)
     def get_list(self,q:str,limit:int=100,offset:int=0,fields:str="id,title,main_picture") -> list[Anime] | ErrorSearch:
         """Get Anime List by name"""
-        payload =  {"q" : q, "limit": limit, "offset": offset, "fields": fields}
+        payload =  {"q" : q[0:63], "limit": limit, "offset": offset, "fields": fields}
         return self.__query._get(self.__slug_type,payload)
     
     @set_media(Anime)
@@ -46,7 +46,7 @@ class MalManga():
     @set_media_list(Manga)
     def get_list(self,q:str,limit:int=100,offset:int=0,fields:str="id,title,main_picture") -> list[Manga] | ErrorSearch:
         """Get Manga List by name"""
-        payload =  {"q" : q, "limit": limit, "offset": offset, "fields": fields}
+        payload =  {"q" : q[0:64], "limit": limit, "offset": offset, "fields": fields}
         return self.__query._get(self.__slug_type,payload)
     
     @set_media(Manga)
@@ -82,7 +82,7 @@ class MalForum():
     
     def get_topics(self,board_id:int,subboard_id:int,q:str,topic_user_name:str="",user_name:str="",limit:int=100,offset:int=0) -> list:
         """Get forum topic details - Unstable this function return JSON DATA maybe your repair struct!"""
-        payload =  {"q":q,"board_id":board_id,"subboard_id":subboard_id,"topic_user_name":topic_user_name,"user_name":user_name,"limit": limit, "offset": offset,"sort":"recent"}
+        payload =  {"q":q[0:64],"board_id":board_id,"subboard_id":subboard_id,"topic_user_name":topic_user_name,"user_name":user_name,"limit": limit, "offset": offset,"sort":"recent"}
         return self.__query._get(self.__slug_type+"/topics",payload)
     
 class MalUser():

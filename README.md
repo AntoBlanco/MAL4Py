@@ -7,7 +7,7 @@ An unofficial MyAnimeList API for Python 3.
   
 Currently, MAL4Py is a small package for download and sync information from MyAnimeList.
 
-#### Version 0.1.3
+#### Version 0.1.4
 
 ## API Documentation
 [MAL API v2 Beta Documentation](https://myanimelist.net/apiconfig/references/api/v2)
@@ -111,6 +111,7 @@ from mal import MalAccount
 
 
 # Query Anime for all login types
+# the query 'q' value must be minimum 3 characters
 
 search = account.anime.get_details(anime_id=44511)
 search = account.anime.get_list("chainsaw",limit=3)

@@ -226,5 +226,5 @@ class Auth():
         return _MalAccount(self.__client_id,self.__client_secret, MALTOKEN)
     
     async def guest_login(self) -> _MalAccount:
-        """### Can use someone functions API, BEWARE `(Unstable!)`"""
+        """### You can use some API functions, BEWARE `(Unstable!)`"""
         return _MalAccount(self.__client_id,self.__client_secret, None)

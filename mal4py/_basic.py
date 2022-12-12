@@ -35,7 +35,7 @@ class _BasicReq:
         return [resp_post.status_code,resp_post.json()]
     
     def _patch(self, slug:str, data: dict | None = None) -> list[int,dict]:
-        """Put request to https://api.myanimelist.net/v2/"""
+        """Patch request to https://api.myanimelist.net/v2/"""
         resp_patch = requests.patch(_api_url+slug,headers=self.headers,data=data)
         print(resp_patch.url)
         print(self.headers)

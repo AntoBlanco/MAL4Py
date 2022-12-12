@@ -48,7 +48,8 @@ from mal4py import Auth, get_new_code_verifier, MalToken
 """
 # ID Client MAL App Android, recomend replace for own ID Client
 auth = Auth("6114d00ca681b7701d1e15fe11a4987e") 
-
+# if your APP has a Client Secret; OMIT in all other cases (i.e. you selected "Android", "iOS", or "Other" as App Type)
+auth = Auth("my_clientID","my_clientSecret") 
 
 # UNOFFICIAL WAY TO LOGIN
 """

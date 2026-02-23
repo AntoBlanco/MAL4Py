@@ -1,5 +1,5 @@
 [build-system]
-requires = ["requests","setuptools"]
+requires = ["setuptools","wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -16,6 +16,13 @@ description = "MAL API An unofficial MyAnimeList API for Python 3"
 readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.25.0",
+]
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

@@ -7,7 +7,10 @@ An unofficial MyAnimeList API for Python 3.
   
 Currently, MAL4Py is a small package for download and sync information from MyAnimeList.
 
-#### Version 0.1.4
+[![Contributing Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](CONTRIBUTING.md)
+[![Tests Status](https://img.shields.io/badge/tests-passing-success)](CONTRIBUTING.md)
+
+#### Version 0.1.5
 
 ## API Documentation
 [MAL API v2 Beta Documentation](https://myanimelist.net/apiconfig/references/api/v2)
@@ -150,6 +153,10 @@ search = account.user.delete_animelist_item(21)
 search = account.user.get_animelist(status="watching")
 
 ```
+
+## CONTRIBUIND
+
+agregar información sobre eso para que cualquiera pueda revisar la documentación.
 
 ## References
 

@@ -1,5 +1,8 @@
-#Testing local
-test.py
+#Testing and Doc internal local folder
+doc_internal
+
+#VSCode
+.vscode
 
 #Pypi confg
 .pypirc

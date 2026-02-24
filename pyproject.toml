@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mal4py"
-version = "0.1.4"
+version = "0.1.5"
 authors = [
     { name="Tony White", email="tony.white_dev@proton.me" },
 ]
@@ -19,10 +19,7 @@ requires-python = ">=3.9"
 dependencies = [
     "requests>=2.25.0",
 ]
-[project.optional-dependencies]
-dev = [
-    "pytest",
-]
+
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -32,3 +29,7 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/AntoBlanco/MAL4Py"
 "Bug Tracker" = "https://github.com/AntoBlanco/MAL4Py/issues"
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]

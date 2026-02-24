@@ -1,0 +1,14 @@
+# Exclude test and docs
+recursive-exclude tests *
+recursive-exclude docs *
+
+# Exclude file configuration
+exclude .env
+exclude pytest.ini
+exclude CONTRIBUTING.md
+exclude .gitignore
+exclude .github/workflows/*
+
+# Include basic docs
+include README.md
+include LICENSE

@@ -9,21 +9,21 @@ load_dotenv()
 def client_id():
     cid = os.getenv("MAL_CLIENT_ID")
     if not cid:
-        pytest.fail("Falta MAL_CLIENT_ID en el archivo .env")
+        pytest.fail("MAL_CLIENT_ID is missing from the .env file")
     return cid
 
 @pytest.fixture(scope="session")
 async def auth_session(client_id):
     """
-    Inicia sesión una única vez para toda la suite de pruebas.
+    Log in only once for the entire test suite.
     """
     user = os.getenv("MAL_USER")
     password = os.getenv("MAL_PASS")
     
     if not user or not password:
-        pytest.fail("Falta MAL_USER o MAL_PASS en el archivo .env")
+        pytest.fail("MAL_USER or MAL_PASS is missing from the .env file")
         
     auth = Auth(client_id)
-    # Aquí se hace el único login real
+    # This is where the only real login takes place.
     account = await auth.unstable_login(user, password)
     return account

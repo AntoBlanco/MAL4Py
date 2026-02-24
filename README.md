@@ -153,11 +153,6 @@ search = account.user.delete_animelist_item(21)
 search = account.user.get_animelist(status="watching")
 
 ```
-
-## CONTRIBUIND
-
-agregar información sobre eso para que cualquiera pueda revisar la documentación.
-
 ## References
 
 For each parameter required in any query you can review the documentation at [MAL API](https://myanimelist.net/apiconfig/references/api/v2)

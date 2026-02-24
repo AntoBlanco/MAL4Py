@@ -37,3 +37,15 @@ dev = [
     "python-dotenv",
     "black"
 ]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mal4py*"]
+exclude = [
+    "tests*", 
+    "docs*", 
+    "examples*", 
+    "*.egg-info", 
+    ".github*",
+    "pytest.ini",
+    ".env*"
+]

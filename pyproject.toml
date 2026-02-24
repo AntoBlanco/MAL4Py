@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mal4py"
-version = "0.1.5"
+version = "0.1.4"
 authors = [
-    { name="Tony White", email="tony.white_dev@proton.me" },
+    { name="Tony White", email="kirock1195+dev@gmail.com" },
 ]
 maintainers = [
-    { name="antoblanco", email="tony.white_dev@proton.me"},
+    { name="antoblanco", email="kirock1195+dev@gmail.com"},
 ]
 keywords = ["api", "myanimelist", "MAL", "Anime", "Manga"]
 description = "MAL API An unofficial MyAnimeList API for Python 3"
